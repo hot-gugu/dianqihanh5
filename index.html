@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>平台入口 · 合肥市电气焊安全监管服务平台</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f7fb; color: #24344d; font: 14px/1.6 "Microsoft YaHei", system-ui, sans-serif; }
+    main { width: min(100% - 32px, 960px); margin: clamp(28px, 8vh, 80px) auto; }
+    h1 { margin: 0 0 24px; color: #172033; font-size: clamp(22px, 3.5vw, 32px); font-weight: 400; }
+    nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+    a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 1px solid #d8e5f4; border-radius: 8px; background: #fff; color: #24344d; text-decoration: none; }
+    a:hover { border-color: #0879ff; background: #eef6ff; }
+    a:focus-visible { outline: 2px solid #0879ff; outline-offset: 2px; }
+    .primary { border-color: transparent; background: linear-gradient(100deg, #0879ff, #6654f7); color: white; }
+    .primary:hover { background: linear-gradient(100deg, #065fd4, #6654f7); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>合肥市电气焊安全监管服务平台</h1>
+    <nav aria-label="平台页面入口">
+      <a class="primary" href="./pages/index.html">监管大屏<span aria-hidden="true">→</span></a>
+      <a href="./pages/mini-workbench.html">焊工作业小程序<span aria-hidden="true">→</span></a>
+      <a href="./device-management.html">设备管理<span aria-hidden="true">→</span></a>
+      <a href="./pages/enterprise-management.html">单位管理<span aria-hidden="true">→</span></a>
+      <a href="./pages/analytics.html">统计分析<span aria-hidden="true">→</span></a>
+      <a href="./pages/ledger.html">预警台账<span aria-hidden="true">→</span></a>
+      <a href="./pages/warning-rules.html">预警规则<span aria-hidden="true">→</span></a>
+      <a href="./pages/docs.html">功能说明<span aria-hidden="true">→</span></a>
+    </nav>
+  </main>
+</body>
+</html>
