@@ -3,10 +3,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>电焊作业小程序原型</title>
-<link rel="stylesheet" href="../_data/leaflet/leaflet.css">
-<script defer src="../_data/leaflet/leaflet.js"></script>
-<script defer src="../_data/street-boundaries.js"></script>
-<script defer src="../_data/station-boundaries.js"></script>
+<link rel="stylesheet" href="../assets/station-map/leaflet.css">
+<script defer src="../assets/station-map/leaflet.js"></script>
+<script defer src="../assets/station-map/street-boundaries.js"></script>
+<script defer src="../assets/station-map/station-boundaries.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#e7edf2;color:#193047;font:15px/1.55 "Microsoft YaHei",sans-serif}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #277bc3;outline-offset:3px}.app{max-width:480px;min-height:100dvh;margin:auto;background:#f4f7f9;padding:20px 16px 115px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}h1,h2,p{margin:0}h1{font-size:25px}h2{font-size:17px;margin-bottom:10px}.card{background:white;border:1px solid #dce5eb;border-radius:12px;padding:14px;margin-bottom:12px}.identity{display:flex;justify-content:space-between;gap:8px;align-items:center}.muted{color:#526679;font-size:13px}.action{background:#dff2ed;color:#075d4b;border:0;border-radius:8px;padding:9px}.tools{display:flex;flex-wrap:wrap;gap:8px}.notice{background:#fff2d9;color:#723c0a}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);background:white;border-top:1px solid #dae5ea;display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom))}.nav button{border:0;background:white;color:#34516a;min-height:48px;border-radius:10px}.nav button[aria-current]{background:#edf4f8;font-weight:bold}.nav .scan{background:#08735d;color:white;font-weight:bold}.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px}.filters input{grid-column:1/-1}.filters input,.filters select{width:100%;padding:9px;border:1px solid #bacbd8;border-radius:7px;background:white;color:inherit}.map{position:relative;height:188px;margin:10px 0;background:#e1eee3;border-radius:9px;overflow:hidden}.map svg{position:absolute;width:100%;height:100%;pointer-events:none}.pin{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border:2px solid white;border-radius:50%;background:#08735d;color:white}.pin.active{background:#a34313}.station{display:block;text-align:left;width:100%;color:inherit}.station.active{border-color:#08735d;background:#f0fbf7}.status{float:right;color:#076555;font-size:12px}.count{margin:10px 0}dialog{border:0;border-radius:12px;width:min(360px,90vw);padding:20px}dialog::backdrop{background:#12263e80}dialog p{margin:12px 0}
 .nav{box-shadow:0 -3px 18px #19304712;align-items:center}.nav button[aria-current]{background:transparent;color:#a84213}.nav .scan{background:#bd490e;border-radius:999px}.app:has(#sites:not([hidden])){padding-top:0}.map-stage{position:relative;margin:0 -16px;background:#e1eee3;padding-top:108px}.map-stage .filters{position:absolute;z-index:1;top:12px;left:14px;right:14px}.map-stage .filters input{grid-row:1;border-radius:999px}.map-stage .filters select{border-radius:999px}.map-stage .map{height:clamp(220px,38dvh,360px);margin:0;border-radius:0}.map-hint{padding:4px 14px 18px}.sheet{position:relative;margin:-12px -16px 0;background:white;border-radius:18px 18px 0 0;padding:10px 16px 16px}.sheet h2{margin-top:10px}.sheet .station{border-width:0 0 1px;border-radius:0;margin:0}.pin.active{outline:3px solid #f3b084}
@@ -420,8 +420,13 @@ function addStationBasemap(){
  map.on('zoomend',updateDetail);
  updateDetail();
 }
+let mapResourcesReady=false;
+document.addEventListener('DOMContentLoaded',()=>{
+ mapResourcesReady=true;
+ if(!byId('sites').hidden){initMap();render();}
+},{once:true});
 function initMap(){
- if(map)return;
+ if(map||!mapResourcesReady)return;
  if(!window.L){
   byId('map').textContent='地图组件未加载，仍可使用下方站点列表。';
   return;
