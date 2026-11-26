@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>设备管理列表 - 合肥市电气焊安全监管服务平台</title>
+  <style>
+    :root{--blue:#3f73f4;--primary:#188cf0;--bg:#f2f7fd;--line:#e6ebf1;--text:#273343;--muted:#8d98a7;--danger:#ff646b;--side:208px}*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;color:var(--text);background:var(--bg)}button,input,select{font:inherit}button,a{outline-offset:3px}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #148cf0}::selection{background:#5aa8ff;color:#fff}.topbar{height:62px;background:linear-gradient(120deg,#728de9 0 28%,#4273f4 42% 100%);display:flex;align-items:center;color:#fff;padding:0 20px;position:sticky;top:0;z-index:20}.brand{font-weight:800;font-style:italic;font-size:18px;letter-spacing:.2px}.top-actions{margin-left:auto;display:flex;align-items:center;gap:28px}.top-item{display:grid;place-items:center;gap:2px;color:#fff;text-decoration:none;font-size:13px}.top-item svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2}.user{display:flex;align-items:center;gap:10px}.avatar{width:41px;height:41px;border-radius:50%;background:#dff2ff;color:#4985e9;display:grid;place-items:center}.avatar svg{width:27px;height:27px;fill:currentColor}.app{display:grid;grid-template-columns:var(--side) minmax(0,1fr);min-height:calc(100vh - 62px)}.sidebar{background:#fff;border-right:1px solid var(--line);position:relative;padding-bottom:48px}.nav-item,.sub-item{height:48px;display:flex;align-items:center;color:#59626e;text-decoration:none;cursor:pointer}.nav-item{padding:0 22px;gap:12px}.nav-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}.chev{margin-left:auto;font-size:13px}.nav-item.open{color:#4778ed}.subnav{background:#f8fafc}.sub-item{padding-left:52px;font-size:14px}.sub-item.active{background:var(--primary);color:#fff;font-weight:700}.collapse{position:absolute;left:20px;bottom:18px;color:#4d5662}.main{padding:16px 20px 18px;min-width:0}.breadcrumb{height:36px;display:flex;align-items:flex-start;gap:9px;font-size:15px}.breadcrumb span:last-child{color:#b3bdca}.panel{background:#fff;border:1px solid #edf1f5}.tabs{height:39px;border-bottom:1px solid #dce3eb;display:flex;gap:40px;padding-left:20px}.tab{border:0;background:transparent;color:#59626f;padding:0 0 10px;position:relative;cursor:pointer}.tab.active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#2699f6}.filters{padding:18px 34px 16px;display:grid;grid-template-columns:repeat(4,minmax(210px,1fr));gap:18px 16px}.field{display:flex;align-items:center;gap:12px;min-width:0}.field label{white-space:nowrap;font-size:14px}.control{height:33px;border:1px solid #dfe5eb;border-radius:4px;background:#fff;color:#a3acb8;padding:0 12px;min-width:0;flex:1}.date-control{display:flex;align-items:center;justify-content:space-around}.filter-actions{grid-column:4;display:flex;justify-content:flex-end;gap:12px}.btn{height:33px;border:0;border-radius:4px;padding:0 17px;color:#fff;background:#409df2;cursor:pointer}.btn:active{transform:translateY(1px)}.btn.light{background:#9bcdf7}.btn[disabled]{opacity:.5;cursor:not-allowed}.table-panel{margin-top:16px;padding:18px 16px 12px;overflow:hidden}.table-wrap{overflow:auto;max-height:524px;scrollbar-color:#b9c9d9 #f4f7fa}table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:1470px;font-size:13px;font-variant-numeric:tabular-nums}th{height:50px;background:#fafbfc;text-align:left;color:#1f2937;font-weight:700;border-bottom:1px solid var(--line);padding:0 12px}td{height:70px;border-bottom:1px solid var(--line);padding:0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}tr:hover td{background:#f8fbff}th:first-child,td:first-child{width:42px;text-align:center}.check{width:14px;height:14px;accent-color:var(--primary)}.tag{display:inline-block;padding:4px 9px;border:1px solid #ffd5d7;background:#fff1f1;color:var(--danger);border-radius:4px}.actions{display:flex;gap:15px}.actions a{color:#168ef1;text-decoration:none;cursor:pointer}.actions a.scrap{color:#e89518}.actions a.delete{color:#ff6368}.pager{height:50px;display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:13px}.page-size{height:34px;border:1px solid #dce3eb;border-radius:4px;background:#fff;color:#5c6674;padding:0 12px}.page{min-width:34px;height:34px;border:1px solid #dce3eb;background:#fff;border-radius:4px;color:#475160;cursor:pointer}.page.active{border-color:#3199f4;color:#168cf0;background:#f4faff}.page.ellipsis{border:0}.jump{width:58px;height:34px;border:1px solid #dce3eb;border-radius:4px;text-align:center}.toast{position:fixed;right:24px;bottom:24px;background:#26384b;color:#fff;padding:11px 18px;border-radius:6px;box-shadow:0 10px 30px #1b304733;opacity:0;transform:translateY(12px);pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:none}.drawer-mask{position:fixed;inset:0;background:#14283d66;z-index:40;visibility:hidden;opacity:0;transition:.22s}.drawer-mask.open{visibility:visible;opacity:1}.scrap-drawer{position:absolute;right:0;top:0;width:min(440px,92vw);height:100%;background:#fff;box-shadow:-12px 0 38px #19324d2e;transform:translateX(100%);transition:transform .26s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}.drawer-mask.open .scrap-drawer{transform:none}.drawer-head{height:68px;padding:0 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;font-size:18px;font-weight:700}.drawer-close{margin-left:auto;width:34px;height:34px;border:0;background:transparent;color:#677484;font-size:25px;cursor:pointer}.drawer-body{padding:24px;flex:1;overflow:auto}.device-summary{background:#f4f8fd;padding:14px 16px;border-radius:6px;margin-bottom:22px;display:grid;gap:7px;font-size:14px}.device-summary b{color:#26384b}.form-group{margin-bottom:22px}.form-group label{display:block;margin-bottom:9px;font-weight:700}.required{color:#f45b63}.reason{width:100%;min-height:130px;border:1px solid #dce4ec;border-radius:5px;padding:12px;resize:vertical}.upload-box{border:1px dashed #a9c7e5;border-radius:6px;background:#f8fbff;padding:24px;text-align:center;color:#6f7d8d;cursor:pointer}.upload-box:hover{border-color:#409df2;background:#f1f8ff}.upload-box input{display:none}.upload-title{color:#238fe9;font-weight:700;margin-bottom:5px}.file-name{margin-top:10px;color:#2c6f9f;word-break:break-all}.drawer-footer{height:70px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:0 24px}.drawer-footer .btn.secondary{background:#fff;color:#596573;border:1px solid #dce3eb}.empty-state{height:280px;display:grid;place-items:center;color:#929dab}.scrap-proof{color:#188cf0;cursor:pointer;text-decoration:none}@media(max-width:1180px){:root{--side:176px}.filters{grid-template-columns:repeat(2,minmax(250px,1fr))}.filter-actions{grid-column:2}.top-actions{gap:16px}}@media(max-width:760px){.top-item:not(.user){display:none}.app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:12px}.filters{grid-template-columns:1fr;padding:16px}.filter-actions{grid-column:1}.tabs{gap:24px;overflow-x:auto}.brand{font-size:15px}}
+    .scrap-ledger colgroup{display:none}.scrap-ledger{min-width:1570px}.scrap-ledger th:last-child{width:158px}.ledger-action{border:0;background:none;color:#126dab;cursor:pointer;padding:6px}.ledger-action:hover{text-decoration:underline}.ledger-detail{border:0;margin:0 0 0 auto;height:100%;max-height:none;width:min(440px,100%);max-width:100%;padding:0;color:var(--text)}.ledger-detail::backdrop{background:#14283d66}.ledger-detail h2{font-size:18px}.ledger-detail dl{padding:0 24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px}.ledger-detail dd{margin:0;overflow-wrap:anywhere}
+    .proof-thumb{display:inline-block;margin-right:6px;margin-top:8px;padding:0;border:1px solid var(--line);border-radius:5px;background:#fff;cursor:zoom-in}.proof-thumb img{display:block;width:80px;height:64px;object-fit:cover}.proof-preview{width:max-content;max-width:94vw;max-height:94vh;border:0;border-radius:8px;padding:0;color:var(--text)}.proof-preview::backdrop{background:#14283daa}.proof-preview img{display:block;max-width:92vw;max-height:calc(94vh - 68px);object-fit:contain}
+    .proof-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.proof-gallery .proof-thumb{display:block;width:100%;min-width:0;margin:0;overflow:hidden}.proof-gallery img{width:100%;height:auto;aspect-ratio:5/4}
+    .iteration-trigger{float:right;margin:0 0 8px 12px;background:#b84a08;font-weight:700}.iteration-trigger:hover{background:#963a05}.iteration-dialog{width:min(680px,calc(100% - 32px));max-height:85vh;padding:24px;border:1px solid var(--line);border-radius:12px;color:#344e69}.iteration-dialog::backdrop{background:#14283d80}.iteration-dialog h2{margin:0;color:#9a400b;font-size:20px}.iteration-dialog li{margin:8px 0;line-height:1.7}.iteration-dialog ol{padding-left:22px}.iteration-dialog form{text-align:right}
+  .top-actions .mini-entry{display:inline-flex;align-items:center;min-height:34px;padding:4px 12px;border:1px solid #ffffff80;border-radius:6px;background:#ffffff20;color:#fff;font-weight:700;white-space:nowrap}.top-actions .mini-entry:hover{background:#ffffff38}.top-actions .mini-entry:focus-visible{outline-color:#fff}
+header.topbar{position:sticky;top:0;z-index:25}.mini-entry{display:inline-flex!important;align-items:center;white-space:nowrap;border:1px solid #ffffff80;border-radius:6px;padding:5px 10px;color:white;text-decoration:none;font-weight:700}
+.warning-nav summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;list-style:none;padding-inline:22px;min-height:48px}.warning-nav summary::-webkit-details-marker{display:none}.warning-nav summary::after{content:"⌄"}.warning-nav[open]>summary::after{transform:rotate(180deg)}.warning-nav>a{display:block;padding-left:42px}
+</style>
+</head>
+<body>
+  <header class="topbar"><div class="brand">合肥市电气焊安全监管服务平台</div><div class="top-actions"><button class="scope-trigger" type="button" aria-haspopup="dialog">版本需求范围</button><a class="top-item mini-entry" href="pages/mini-workbench.html">小程序入口</a><a class="top-item" href="pages/analytics.html"><svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4-8-4zM5 12l7 4 7-4M5 16l7 4 7-4"/></svg><span>总览</span></a><a class="top-item" href="pages/index.html"><svg viewBox="0 0 24 24"><path d="M12 3l3 6 5 2-2 8H6l-2-8 5-2 3-6z"/><circle cx="12" cy="12" r="2"/></svg><span>监管大屏</span></a><div class="top-item user"><span class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/></svg></span><span>电气焊</span></div></div></header>
+  <div class="app"><aside class="sidebar"><a class="nav-item" href="pages/enterprise-management.html"><svg viewBox="0 0 24 24"><path d="M4 9h16v10H4zM7 9V6h10v3M8 13h8"/></svg>单位管理<span class="chev">⌄</span></a><a class="nav-item"><svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="2"/><circle cx="17" cy="7" r="2"/><path d="M7 9v9M17 9v9M4 14h6M14 14h6"/></svg>焊工管理<span class="chev">⌄</span></a><a class="nav-item"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="12" rx="2"/><path d="M8 9v4M12 8v6M16 10v3M9 20h6"/></svg>安装管理<span class="chev">⌄</span></a><a class="nav-item open"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="7" height="6"/><rect x="13" y="5" width="7" height="6"/><rect x="4" y="13" width="7" height="6"/><circle cx="16.5" cy="16" r="3.5"/></svg>设备管理<span class="chev">⌃</span></a><div class="subnav"><a class="sub-item active">电气焊设备管理</a><a class="sub-item">设备操作记录管理</a><a class="sub-item">设备生产企业管理</a><a class="sub-item">设备组合管理</a><a class="sub-item">设备远程控制</a></div><a class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>系统设置<span class="chev">⌄</span></a><a class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v10M7 12h10"/></svg>运营管理<span class="chev">⌄</span></a><details class="warning-nav"><summary class="nav-item">预警统计</summary><a class="sub-item" href="pages/analytics.html">统计分析</a><a class="sub-item" href="pages/ledger.html">预警台账</a></details><a class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h6"/></svg>学习培训<span class="chev">⌄</span></a><div class="collapse">☷</div></aside>
+    <main class="main"><div class="breadcrumb"><span>设备管理</span><span>/</span><span>设备管理列表</span></div><section class="panel"><div class="tabs"><button class="tab active" data-tab="monitor">监测设备管理</button><button class="tab" data-tab="scrapped">报废设备台账</button><button class="tab" data-tab="locked">锁定设备池</button><button class="tab" data-tab="logs">变更操作日志</button></div><div class="filters"><div class="field"><label>所属区域</label><select class="control"><option>请选择所属区域</option><option>合肥市</option><option>包河区</option><option>蜀山区</option></select></div><div class="field"><label>所属企业</label><input class="control" placeholder="请选择所属企业"></div><div class="field"><label>设备编号</label><input class="control" placeholder="请输入设备编号"></div><div class="field"><label>芯片编号</label><input class="control" placeholder="请输入芯片编号"></div><div class="field"><label>安装工姓名</label><input class="control" placeholder="请输入安装工姓名"></div><div class="field"><label>安装时间</label><div class="control date-control"><span>◷</span><span>请选择</span><span>-</span><span>请选择</span></div></div><div class="field"><label>设备作业状态</label><select class="control"><option>请选择设备作业状态</option><option>作业中</option><option>停止作业</option></select></div><div class="field"><label>安装来源</label><select class="control"><option>请选择安装来源</option><option>补贴安装</option><option>自费安装</option></select></div><div class="filter-actions"><button class="btn light" id="batchBtn">批量操作⌄</button><button class="btn" id="groupExport">分组导出</button><button class="btn" id="tableExport">表格导出</button></div></div></section>
+      <section class="panel table-panel"><div class="table-wrap"><table><colgroup><col style="width:42px"><col style="width:115px"><col style="width:115px"><col style="width:105px"><col style="width:120px"><col style="width:100px"><col style="width:115px"><col style="width:115px"><col style="width:90px"><col style="width:105px"><col style="width:110px"><col style="width:115px"><col style="width:255px"></colgroup><thead id="tableHead"><tr><th><input class="check" id="checkAll" type="checkbox" aria-label="全选"></th><th>所属企业</th><th>设备编号</th><th>芯片厂家</th><th>芯片编号</th><th>安装工姓名</th><th>安装时间</th><th>设备位置</th><th>在线状态</th><th>设备作业状态</th><th>安装来源</th><th>心跳时间</th><th>操作</th></tr></thead><tbody id="deviceRows"></tbody></table></div><div class="pager"><span id="totalCount">共 52176 条</span><select class="page-size"><option>10条/页</option><option>20条/页</option></select><button class="page">‹</button><button class="page active">1</button><button class="page">2</button><button class="page">3</button><button class="page">4</button><button class="page">5</button><button class="page">6</button><button class="page ellipsis">…</button><button class="page">5218</button><button class="page">›</button><span>前往</span><input class="jump" value="1" aria-label="跳转页码"><span>页</span></div></section></main></div><div class="drawer-mask" id="scrapMask"><aside class="scrap-drawer" role="dialog" aria-modal="true" aria-labelledby="scrapTitle"><header class="drawer-head" id="scrapTitle">设备报废<button class="drawer-close" id="drawerClose" aria-label="关闭">×</button></header><div class="drawer-body"><div class="device-summary"><div><b>设备编号：</b><span id="scrapDeviceNo">--</span></div><div><b>所属企业：</b><span id="scrapCompany">--</span></div></div><div class="form-group"><label for="scrapReason"><span class="required">*</span> 报废原因</label><textarea class="reason" id="scrapReason" maxlength="300" placeholder="请填写设备报废原因（最多300字）"></textarea></div><div class="form-group"><label><span class="required">*</span> 报废凭证</label><label class="upload-box" for="scrapProof"><input id="scrapProof" type="file" multiple accept="image/jpeg,image/png,.jpg,.jpeg,.png"><div class="upload-title">点击上传报废凭证</div><div>仅支持 JPG、PNG 图片，最多 3 张，每张 10 MB</div><div class="file-name" id="proofName">尚未选择文件</div></label></div></div><footer class="drawer-footer"><button class="btn secondary" id="cancelScrap">取消</button><button class="btn" id="confirmScrap" disabled>确定报废</button></footer></aside></div><div class="toast" id="toast"></div>
+  <dialog class="ledger-detail" id="ledgerDetail" aria-labelledby="ledgerTitle"><form method="dialog" class="drawer-head"><h2 id="ledgerTitle">设备信息</h2><button class="drawer-close" aria-label="关闭">×</button></form><dl></dl></dialog>
+  <dialog class="proof-preview" id="proofPreview" aria-labelledby="proofPreviewTitle">
+    <form method="dialog" class="drawer-head"><span id="proofPreviewTitle">报废凭证预览</span><button class="drawer-close" aria-label="关闭预览">×</button></form>
+    <img id="proofPreviewImage" alt="报废凭证原图">
+  </dialog>
+  <dialog class="iteration-dialog" id="iterationDialog" aria-labelledby="iterationTitle">
+    <h2 id="iterationTitle">迭代需求说明</h2>
+    <ol>
+      <li><strong>设备报废</strong>。在监测设备列表中点击“报废”，填写报废原因并上传凭证照片。确认后，设备直接转入报废池，可在报废设备台账中查看。</li>
+      <li><strong>报废设备台账</strong>。新增“报废设备台账”页签，用于查询报废记录。
+        <ol>
+          <li>可按页面提供的筛选条件查询，查询结果按台账表头所列字段展示。</li>
+          <li>点击“设备信息”，可查看与监测设备管理中“编辑”页面一致的设备字段。</li>
+          <li>点击“报废详情”，可查看设备编号、报废原因、报废凭证和报废时间。点击凭证缩略图可放大预览。</li>
+        </ol>
+      </li>
+      <li><strong>超级管理员与设备锁定</strong>。新增超级管理员角色，供实施运维人员管理设备锁定。
+        <ol>
+          <li>仅超级管理员可看到并使用“移动到锁定设备池”操作，以及查看“锁定设备池”列表。</li>
+          <li>已锁定设备仍显示在普通用户的“监测设备管理”列表中，系统暂停向普通用户推送这些设备的预警信息。</li>
+        </ol>
+      </li>
+    </ol>
+    <form method="dialog"><button class="btn" autofocus>关闭</button></form>
+  </dialog>
+  <script>
+    const iterationTrigger=document.createElement('button');
+    iterationTrigger.type='button';
+    iterationTrigger.className='btn iteration-trigger';
+    iterationTrigger.textContent='迭代需求说明';
+    iterationTrigger.setAttribute('aria-haspopup','dialog');
+    document.querySelector('.main').prepend(iterationTrigger);
+    iterationTrigger.addEventListener('click',()=>document.querySelector('#iterationDialog').showModal());
+    const devices=[['安徽力盾钢结构有限公司','WYH42111501','艾特芯','TZDH0220201','黄金山','2026-11-24 09:18','安徽省合肥市','补贴安装'],['安徽力盾钢结构有限公司','WYH42111502','艾特芯','TZDH0220202','黄金山','2026-11-24 09:06','-','补贴安装'],['安徽力盾钢结构有限公司','WYH42111503','艾特芯','TZDH0220203','黄金山','2026-11-24 08:49','浙江省杭州市','补贴安装'],['中国建筑第五工程局','WYH42111504','艾特芯','TZDH0220204','黄金山','2026-11-24 08:31','-','自费安装'],['安徽创美建筑工程有限公司','WYH42111305','艾特芯','TZDH0220205','熊晓菲','2026-11-23 17:26','安徽省合肥市','补贴安装'],['安徽创美建筑工程有限公司','WYH42111306','艾特芯','TZDH0220206','熊晓菲','2026-11-23 16:48','-','补贴安装'],['安徽创美建筑工程有限公司','WYH42111307','艾特芯','TZDH0220207','熊晓菲','2026-11-23 15:31','安徽省合肥市','补贴安装']];
+    const samples=['设备外观','设备铭牌','损坏部位'].map((label,i)=>{
+      const canvas=document.createElement('canvas');
+      canvas.width=800;canvas.height=520;
+      const c=canvas.getContext('2d');
+      c.fillStyle='#edf4fa';c.fillRect(0,0,800,520);
+      c.fillStyle='#284761';c.fillRect(190,100,420,245);
+      c.fillStyle='#bacddd';c.fillRect(220,130,360,185);
+      c.fillStyle='#2877a6';c.fillRect(245+i*95,155,110,135);
+      c.fillStyle='#203952';c.textAlign='center';c.font='36px sans-serif';
+      c.fillText(label,400,405);
+      c.font='23px sans-serif';c.fillText('报废凭证示意图',400,460);
+      return canvas.toDataURL('image/png');
+    });
+    const scrapped=[
+      {device:['演示企业甲','DEMO-001','演示芯片','DEMO-C001','演示安装工甲','2024-06-18 09:30','合肥市包河区（演示）','补贴安装'],reason:'设备老化，维修后仍无法正常启动。',proof:'3 张示意图',proofImages:samples,time:'2026-11-24 14:20'},
+      {device:['演示企业乙','DEMO-002','演示芯片','DEMO-C002','演示安装工乙','2023-10-12 14:10','合肥市蜀山区（演示）','自费安装'],reason:'主板损坏，经检测无法修复。',proof:'3 张示意图',proofImages:samples,time:'2026-11-23 10:15'}
+    ];
+    let activeTab='monitor',scrapIndex=-1;
+    const rows=document.querySelector('#deviceRows'),head=document.querySelector('#tableHead'),totalCount=document.querySelector('#totalCount'),toast=document.querySelector('#toast'),scrapMask=document.querySelector('#scrapMask'),reason=document.querySelector('#scrapReason'),proof=document.querySelector('#scrapProof'),confirmScrap=document.querySelector('#confirmScrap');
+    function notify(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>toast.classList.remove('show'),1800)}
+    const deviceFields=['所属企业','设备编号','芯片厂家','芯片编号','安装工姓名','安装时间','设备位置','安装来源'];
+    const scrapFields=['报废原因','报废凭证','报废时间'];
+    const detailDialog=document.querySelector('#ledgerDetail');
+
+    function scrapValues(record){
+      return [record.reason,record.proof,record.time];
+    }
+
+    function renderLedger(){
+      const header=head.insertRow();
+      head.replaceChildren(header);
+      for(const label of ['序号',...deviceFields,...scrapFields,'操作']){
+        const th=document.createElement('th');
+        th.scope='col';
+        th.textContent=label;
+        header.append(th);
+      }
+      rows.replaceChildren();
+      scrapped.forEach((record,index)=>{
+        const row=rows.insertRow();
+        row.dataset.index=index;
+        for(const value of [index+1,...record.device,...scrapValues(record)]){
+          const cell=row.insertCell();
+          cell.textContent=value;
+          cell.title=value;
+        }
+        const actions=row.insertCell();
+        for(const action of ['设备信息','报废详情']){
+          const button=document.createElement('button');
+          button.type='button';
+          button.className='ledger-action';
+          button.dataset.action=action;
+          button.textContent=action;
+          actions.append(button);
+        }
+      });
+      totalCount.textContent='共 '+scrapped.length+' 条';
+    }
+
+    function openLedgerDetail(record,action){
+      const isDevice=action==='设备信息';
+      const [company,number,chipMaker,chipNumber,installer,installedAt,location,source]=record.device;
+      const sample=number.startsWith('DEMO-');
+      const entries=isDevice?[
+        ['所属企业',company],['设备照片','暂无照片'],
+        ['设备名称',sample?'烽火ZX7-400（演示）':null],['设备编号',number],
+        ['设备厂家',sample?'烽火焊机':null],['芯片厂家',chipMaker],['芯片编号',chipNumber],
+        ['安装工姓名',installer],['安装时间',installedAt],
+        ['电焊类别',sample?'直流焊机':null],['设备经度',sample?'117.23693':null],
+        ['设备纬度',sample?'31.833087':null],['电压',sample?'380V':null],
+        ['通讯协议',sample?'焊之芯二代':null],
+        ['蓝牙地址',sample?(number==='DEMO-001'?'C135A309D201':'C135A309D202'):null],
+        ['设备位置',location],['安装来源',source]
+      ]:[
+        ['设备编号',number],...scrapFields.map((field,index)=>[field,scrapValues(record)[index]])
+      ];
+      const list=detailDialog.querySelector('dl');
+      detailDialog.querySelector('h2').textContent=action;
+      list.replaceChildren();
+      entries.forEach(([field,content])=>{
+        const term=document.createElement('dt');
+        const value=document.createElement('dd');
+        term.textContent=field;
+        value.textContent=content||'未登记';
+        if(field==='报废凭证'){
+          if(record.proofImages?.length){
+            value.textContent='';
+            const gallery=document.createElement('div');
+            gallery.className='proof-gallery';
+            for(const image of record.proofImages){
+            const button=document.createElement('button');
+            button.type='button';
+            button.className='proof-thumb';
+            button.setAttribute('aria-label','放大查看报废凭证');
+            const thumbnail=new Image();
+            thumbnail.src=image;
+            thumbnail.alt='报废凭证缩略图';
+            button.append(thumbnail);
+            button.onclick=()=>{
+              document.querySelector('#proofPreviewImage').src=image;
+              document.querySelector('#proofPreview').showModal();
+            };
+            gallery.append(button);
+            }
+            value.append(gallery);
+          }else{
+            value.append(document.createElement('br'),'暂无可预览图片');
+          }
+        }
+        list.append(term,value);
+      });
+      detailDialog.showModal();
+    }
+    function render(){head.closest('table').classList.toggle('scrap-ledger',activeTab==='scrapped');if(activeTab==='monitor'){head.innerHTML='<tr><th><input class="check" id="checkAll" type="checkbox" aria-label="全选"></th><th>所属企业</th><th>设备编号</th><th>芯片厂家</th><th>芯片编号</th><th>安装工姓名</th><th>安装时间</th><th>设备位置</th><th>在线状态</th><th>设备作业状态</th><th>安装来源</th><th>心跳时间</th><th>操作</th></tr>';rows.innerHTML=devices.map((d,i)=>`<tr data-index="${i}"><td><input class="check rowCheck" type="checkbox" aria-label="选择设备 ${d[1]}"></td><td title="${d[0]}">${d[0]}</td><td>${d[1]}</td><td>${d[2]}</td><td>${d[3]}</td><td>${d[4]}</td><td>${d[5]}</td><td>${d[6]}</td><td><span class="tag">离线</span></td><td><span class="tag">停止作业</span></td><td>${d[7]}</td><td>2026-11-24 ${9+i}:08</td><td><span class="actions"><a data-action="编辑">编辑</a><a data-action="移动到锁定设备池">移动到锁定设备池</a><a class="scrap" data-action="报废">报废</a><a class="delete" data-action="删除">删除</a></span></td></tr>`).join('');totalCount.textContent=`共 ${devices.length} 条`;document.querySelector('#checkAll').addEventListener('change',e=>document.querySelectorAll('.rowCheck').forEach(c=>c.checked=e.target.checked))}else if(activeTab==='scrapped'){renderLedger()}else{head.innerHTML='<tr><th>提示</th></tr>';rows.innerHTML='<tr><td><div class="empty-state">该页签为界面演示，暂无数据</div></td></tr>';totalCount.textContent='共 0 条'}}
+    function openScrap(index){scrapIndex=index;const d=devices[index];document.querySelector('#scrapDeviceNo').textContent=d[1];document.querySelector('#scrapCompany').textContent=d[0];reason.value='';proof.value='';document.querySelector('#proofName').textContent='尚未选择文件';confirmScrap.disabled=true;scrapMask.classList.add('open');reason.focus()}
+    function closeScrap(){scrapMask.classList.remove('open');scrapIndex=-1}
+    function validateScrap(){confirmScrap.disabled=!(reason.value.trim()&&proof.files.length)}
+    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');activeTab=t.dataset.tab;render();notify(`已切换至${t.textContent}`)}));
+    rows.addEventListener('click',e=>{const action=e.target.dataset.action;if(!action)return;if(action==='报废'){openScrap(Number(e.target.closest('tr').dataset.index));return}if(action==='删除'){if(!confirm('确认删除该设备记录吗？'))return;notify('删除操作已触发');return}if(activeTab==='scrapped'){openLedgerDetail(scrapped[Number(e.target.closest('tr').dataset.index)],action);return}notify(`${action}操作已触发`)});
+    reason.addEventListener('input',validateScrap);
+    proof.addEventListener('change',()=>{
+      const files=Array.from(proof.files);
+      const error=files.length>3?'最多选择 3 张图片':
+        files.some(file=>!/\.(jpe?g|png)$/i.test(file.name)||!['image/jpeg','image/png'].includes(file.type))?'仅支持 JPG、PNG 图片':
+        files.some(file=>file.size>10*1024*1024)?'每张图片不得超过 10 MB':'';
+      if(error){proof.value='';notify(error);}
+      document.querySelector('#proofName').textContent=proof.files.length?Array.from(proof.files,file=>file.name).join('、'):'尚未选择文件';
+      validateScrap();
+    });
+    confirmScrap.addEventListener('click',()=>{
+      if(scrapIndex<0||confirmScrap.disabled)return;
+      const device=devices[scrapIndex];
+      const photos=Array.from(proof.files);
+      scrapped.unshift({
+        device:[...device],reason:reason.value.trim(),proof:photos.length+' 张图片',
+        proofImages:photos.map(photo=>URL.createObjectURL(photo)),
+        time:new Date().toLocaleString('zh-CN',{hour12:false})
+      });
+      devices.splice(scrapIndex,1);
+      closeScrap();
+      document.querySelector('[data-tab="scrapped"]').click();
+      notify(`设备 ${device[1]} 已转入报废设备台账`);
+    });
+    document.querySelector('#drawerClose').addEventListener('click',closeScrap);document.querySelector('#cancelScrap').addEventListener('click',closeScrap);scrapMask.addEventListener('click',e=>{if(e.target===scrapMask)closeScrap()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeScrap()});['batchBtn','groupExport','tableExport'].forEach(id=>document.querySelector('#'+id).addEventListener('click',()=>notify(document.querySelector('#'+id).textContent.trim())));document.querySelectorAll('.page').forEach(p=>p.addEventListener('click',()=>{if(p.classList.contains('ellipsis'))return;document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));p.classList.add('active')}));render();
+  </script>
+<link rel="stylesheet" href="assets/version-scope.css"><script src="assets/version-scope.js"></script></body>
+</html>

@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>电焊作业小程序原型</title>
+<link rel="stylesheet" href="../_data/leaflet/leaflet.css">
+<script defer src="../_data/leaflet/leaflet.js"></script>
+<script defer src="../_data/street-boundaries.js"></script>
+<script defer src="../_data/station-boundaries.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#e7edf2;color:#193047;font:15px/1.55 "Microsoft YaHei",sans-serif}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #277bc3;outline-offset:3px}.app{max-width:480px;min-height:100dvh;margin:auto;background:#f4f7f9;padding:20px 16px 115px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}h1,h2,p{margin:0}h1{font-size:25px}h2{font-size:17px;margin-bottom:10px}.card{background:white;border:1px solid #dce5eb;border-radius:12px;padding:14px;margin-bottom:12px}.identity{display:flex;justify-content:space-between;gap:8px;align-items:center}.muted{color:#526679;font-size:13px}.action{background:#dff2ed;color:#075d4b;border:0;border-radius:8px;padding:9px}.tools{display:flex;flex-wrap:wrap;gap:8px}.notice{background:#fff2d9;color:#723c0a}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);background:white;border-top:1px solid #dae5ea;display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom))}.nav button{border:0;background:white;color:#34516a;min-height:48px;border-radius:10px}.nav button[aria-current]{background:#edf4f8;font-weight:bold}.nav .scan{background:#08735d;color:white;font-weight:bold}.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px}.filters input{grid-column:1/-1}.filters input,.filters select{width:100%;padding:9px;border:1px solid #bacbd8;border-radius:7px;background:white;color:inherit}.map{position:relative;height:188px;margin:10px 0;background:#e1eee3;border-radius:9px;overflow:hidden}.map svg{position:absolute;width:100%;height:100%;pointer-events:none}.pin{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border:2px solid white;border-radius:50%;background:#08735d;color:white}.pin.active{background:#a34313}.station{display:block;text-align:left;width:100%;color:inherit}.station.active{border-color:#08735d;background:#f0fbf7}.status{float:right;color:#076555;font-size:12px}.count{margin:10px 0}dialog{border:0;border-radius:12px;width:min(360px,90vw);padding:20px}dialog::backdrop{background:#12263e80}dialog p{margin:12px 0}
+.nav{box-shadow:0 -3px 18px #19304712;align-items:center}.nav button[aria-current]{background:transparent;color:#a84213}.nav .scan{background:#bd490e;border-radius:999px}.app:has(#sites:not([hidden])){padding-top:0}.map-stage{position:relative;margin:0 -16px;background:#e1eee3;padding-top:108px}.map-stage .filters{position:absolute;z-index:1;top:12px;left:14px;right:14px}.map-stage .filters input{grid-row:1;border-radius:999px}.map-stage .filters select{border-radius:999px}.map-stage .map{height:clamp(220px,38dvh,360px);margin:0;border-radius:0}.map-hint{padding:4px 14px 18px}.sheet{position:relative;margin:-12px -16px 0;background:white;border-radius:18px 18px 0 0;padding:10px 16px 16px}.sheet h2{margin-top:10px}.sheet .station{border-width:0 0 1px;border-radius:0;margin:0}.pin.active{outline:3px solid #f3b084}
+#work .action{background:#fff1e6;color:#923a0c}.app:has(#work:not([hidden])){background:#fff8f1}.identity .profile{display:flex;gap:10px;align-items:center;min-width:0}.avatar{width:48px;height:48px;flex:none;border-radius:50%;background:#ffdfbf;color:#a74412}.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.tools .action{display:grid;justify-items:center;gap:6px;min-height:68px;font-size:13px}.tools svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7}.account-actions{display:grid;gap:6px;flex:none}#roleDialog button{margin:4px}
+#work header{gap:10px}.work-date{font-size:clamp(12px,3.6vw,15px);font-weight:500;background:#fff;padding:8px 12px;border-radius:999px}.message-bell{position:relative;flex:none;width:44px;height:44px;display:grid;place-items:center}.message-bell svg{width:23px;height:23px;fill:currentColor}.unread{position:absolute;top:-3px;right:-3px;min-width:19px;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#b6371b;color:white;font-size:11px;text-align:center}
+.nav .scan{display:flex;align-items:center;justify-content:center;gap:7px}.scan-icon{width:21px;height:21px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#work .tools .action{background:transparent;color:#263341;align-content:start}
+#work .tools .action:hover{background:#fff4e8}
+.app-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,var(--icon-light),var(--icon-dark));color:white;box-shadow:0 2px 5px #26334123}
+.app-icon svg{width:24px;height:24px;stroke-width:1.9}
+#work .welder-card{background:linear-gradient(135deg,#fff 42%,#ffebd8);border-color:#f2d6be;padding:16px 14px;box-shadow:0 4px 12px #803e1010}
+.welder-card .avatar{outline:2px solid white;outline-offset:1px}
+.welder-card .role-label{display:inline-block;border-radius:999px;background:#ffead7;color:#923a0c;padding:1px 7px;font-size:12px;vertical-align:middle}
+.welder-card .profile p{margin-top:4px}
+#work .welder-card #switchRole{background:white;border:1px solid #edcbb0}
+#work .welder-card #certAction{background:#b94a0f;color:white}
+.subsidy-card{background:linear-gradient(110deg,#fff0d7,#ffe3bb);border-color:#f1d1a5;gap:12px}
+.subsidy-copy strong{color:#713509;font-size:16px}
+.subsidy-copy .muted{color:#754d2e;margin-top:3px}
+#work .subsidy-card .action{background:#9d420e;color:white;flex:none;border-radius:999px;padding-inline:13px}
+#work .message-bell{background:white;border:1px solid #f2d4bd;border-radius:14px;color:#ab460e;box-shadow:0 3px 9px #803e1014}
+#work .message-bell:hover{background:#ffe9d7}
+.unread{background:#b92e22;line-height:16px;font-weight:700}
+@media(max-width:350px){.welder-card{flex-wrap:wrap}.welder-card .account-actions{display:flex;margin-left:auto}}
+.subsidy-card{background:linear-gradient(110deg,#e9f8ec,#d1efdb);border-color:#b7dec3}
+.subsidy-copy strong,.subsidy-copy .muted{color:#195839}
+#work .subsidy-card .action{background:#14653c;color:#fff}
+.message-strip{display:flex;align-items:center;gap:9px;width:100%;text-align:left;color:#773f17;border-color:#f2d6be;background:#fffaf3}
+.message-strip svg{width:21px;height:21px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8}
+.message-window{height:24px;overflow:hidden;flex:1;min-width:0}
+.message-track{display:block;animation:message-roll 12s ease-in-out infinite}
+.message-track span{display:block;height:24px;line-height:24px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.message-strip:hover .message-track,.message-strip:focus-visible .message-track{animation-play-state:paused}
+@keyframes message-roll{0%,24%{transform:translateY(0)}33%,57%{transform:translateY(-24px)}66%,91%{transform:translateY(-48px)}100%{transform:translateY(-72px)}}
+@media(prefers-reduced-motion:reduce){.message-track{animation:none}}
+.message-strip{background:#fff0df;border-color:#ebbc95;padding:12px 14px}
+.message-strip svg{color:#a84213}
+.message-copy{display:grid;gap:2px;flex:1;min-width:0}
+.message-copy strong{color:#8e370d;font-size:14px}
+.message-copy .message-window{font-size:13px}
+.message-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 9px}
+.message-heading{display:flex;align-items:center;gap:8px}
+.message-strip>.message-window{grid-row:2;grid-column:1/-1}
+.robot-support{position:fixed;z-index:2;right:max(14px,calc((100vw - 480px)/2 + 14px));bottom:calc(80px + env(safe-area-inset-bottom));width:52px;height:52px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;background:#e6f5ff;box-shadow:0 3px 12px #164c8138}.robot-support svg{width:37px;height:33px}.robot-support:hover{background:#cce9ff}#work{padding-bottom:48px}
+.robot-eyes{transform-box:fill-box;transform-origin:center;animation:robot-blink 4s ease-in-out infinite}
+@keyframes robot-blink{0%,74%,82%,89%,96%,100%{transform:scaleY(1)}78%,93%{transform:scaleY(.12)}}
+@media(prefers-reduced-motion:reduce){.robot-eyes{animation:none}}
+#map{isolation:isolate}.map-fallback{padding:16px}.map-stage .filters{z-index:3}
+.map .boundary-label{border:0;background:transparent;box-shadow:none;color:#34516a;font-size:11px;padding:0;text-shadow:0 0 3px white,0 0 5px white}
+.map .boundary-label::before{display:none}
+.station-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.station-sheet-head button{min-height:40px}.sheet .station{display:grid;grid-template-columns:clamp(78px,25%,110px) minmax(0,1fr);gap:12px;align-items:stretch}.station-media{position:relative;min-height:76px}.station-media .station-photo{position:absolute;inset:0;width:100%;height:100%}.station-photo{width:78px;height:68px;flex:none;border-radius:8px;object-fit:cover}.station-copy{min-width:0;flex:1}.station-placeholder{display:grid;place-content:center;text-align:center;background:#e9f2f5;color:#345c70;font-size:11px}.station-placeholder svg{width:24px;height:24px;margin:auto}.map .station-marker svg{position:static;width:22px;height:22px}.station-marker{display:grid;place-items:center;border:2px solid white;border-radius:50%;background:#c74f15;color:white;box-shadow:0 2px 6px #14344455}.station-marker.selected{background:#963607;outline:2px solid #f9bb91}
+/* Muted map colors keep station markers distinct from the basemap. */
+.map-stage{background:#e3ebf2}
+#map{background:#dce7f0}
+#map .boundary-label{color:#405a72}
+#map .leaflet-tile-pane{filter:saturate(.64) brightness(1.04) contrast(.92)}
+.station-sheet-head h2{margin:0 auto 0 0}
+.station-photo-label{position:absolute;bottom:4px;left:4px;padding:1px 4px;border-radius:4px;background:#132b42;color:white;font-size:10px}
+[hidden]{display:none!important}.nav.installer-nav{grid-template-columns:1fr 1fr}
+#roleDialog{color:#202731;padding:20px;border-radius:18px;box-shadow:0 12px 36px #18202b33}
+.role-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.role-head h2{margin:0;font-size:20px}
+#roleDialog button{margin:0}
+.role-close{border:0;background:#f3f1ee;color:#504943;border-radius:50%;width:38px;height:38px;font-size:22px}
+.role-options{display:grid;gap:10px}
+.role-option{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:68px;padding:10px;border:1px solid #ece8f5;border-radius:12px;background:#f6f3fb;text-align:left;color:inherit;font-weight:700}
+.role-option[aria-current="true"]{background:#fff2e5;border-color:#eac09e}
+.role-symbol{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;color:white;background:var(--role-color)}
+.role-symbol svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.role-state{color:#824015;font-size:12px;white-space:nowrap}
+.profile-avatar{border:0;padding:0;background:none;border-radius:50%;display:grid;place-items:center;flex:none}
+#profilePage h1{font-size:20px;margin-right:auto;margin-left:12px}
+.profile-form{display:grid;gap:15px;min-height:calc(72dvh - 30px)}
+.profile-form label{display:grid;gap:5px;font-weight:600}
+.profile-form input,.profile-form textarea{font:inherit;font-weight:400;width:100%;min-height:44px;padding:8px 10px;border:1px solid #d8e3e8;border-radius:8px;color:#193047;background:#fff}
+.profile-form [readonly]{background:#f4f6f7;color:#516474}
+.profile-footer{align-self:end;display:grid;gap:10px}
+.profile-footer button{min-height:44px;font-weight:700}
+.profile-footer .profile-save{background:#08735d;color:#fff}
+.profile-footer .profile-logout{background:#fff1ed;color:#a43420;border:1px solid #eccbc3}
+#work .version-trigger{margin-left:auto;background:#b84a08;color:#fff;font-size:12px;white-space:nowrap;padding:8px}#versionDialog{max-height:85dvh;color:#193047}#versionDialog header{position:sticky;top:0;background:#fff;gap:10px;padding:4px 0}#versionDialog h2{margin:0}#versionDialog h3{color:#91400f}#versionDialog section+section{border-top:1px solid #e8edf0}#versionDialog ul{padding-left:20px}
+.version-role-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;line-height:1.6}.version-role-table th,.version-role-table td{padding:8px 6px;text-align:left;vertical-align:top;border-bottom:1px solid #e8edf0;overflow-wrap:anywhere}.version-role-table thead{background:#fff0df;color:#824015}.version-role-table th:first-child{width:24%}.version-role-table thead th:last-child{width:25%}
+.welding-header{gap:8px}.welding-header h1{font-size:20px;text-align:center;white-space:nowrap}.welding-header button{min-height:42px;white-space:nowrap}.welding-header .welding-export{background:#a74313;color:#fff}.welding-export:disabled{opacity:.55;cursor:default}
+.welding-count{margin:14px 0 8px}.welding-empty{text-align:center;color:#526679;padding:20vh 0 8vh}.welding-device strong{overflow-wrap:anywhere}.welding-device p{margin-top:5px}.app:has(#welderManagement:not([hidden])){padding-bottom:24px;background:#f3f8fa}
+</style>
+<main class="app">
+<section id="work">
+<header><h1 class="work-date">电焊作业 2026-11-25 星期三</h1><button class="action version-trigger" type="button" aria-haspopup="dialog" onclick="document.getElementById('versionDialog').showModal()">版本迭代需求</button><button class="action message-bell" type="button" data-note="消息" aria-label="消息，3 条未读（演示）"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a6 6 0 0 0-6 6v4l-2 4v2h16v-2l-2-4V8a6 6 0 0 0-6-6Zm0 20a3 3 0 0 0 2.8-2h-5.6a3 3 0 0 0 2.8 2Z"/></svg><span class="unread" aria-hidden="true">3</span></button></header>
+<section class="card identity welder-card"><div class="profile"><button id="openProfile" class="profile-avatar" type="button" aria-label="编辑个人信息"><svg class="avatar" viewBox="0 0 48 48" role="img" aria-label="用户头像"><circle cx="24" cy="23" r="9" fill="#ffb975"/><path d="M10 43a14 14 0 0 1 28 0zM14 19a10 10 0 0 1 20 0h3v4H11v-4z" fill="currentColor"/></svg></button><div><strong>戴宁 <span class="role-label" id="role">焊工</span></strong><p class="muted">天泽智联科技股份公司</p><p class="muted" id="certState">认证状态 · 待认证（演示）</p></div></div><div class="account-actions"><button class="action" id="switchRole">切换角色</button><button class="action" id="certAction" data-note="焊工认证">去认证</button></div></section>
+<button class="card message-strip" type="button" data-note="消息" aria-label="查看消息，3 条未读（演示）">
+  <span class="message-copy message-heading"><strong>最新公告</strong></span>
+  <span aria-hidden="true">›</span>
+  <span class="message-window" aria-hidden="true"><span class="message-track"><span>动焊先扫码，持证再作业。</span><span>学习培训 · 可查看操作指南</span><span>设备服务 · 可查询安装站点</span><span>动焊先扫码，持证再作业。</span></span></span>
+</button>
+<section class="card identity subsidy-card" id="welderSubsidy"><div class="subsidy-copy"><strong>政府补贴</strong><p class="muted">申请「加芯赋码」</p></div><button class="action" data-note="政府补贴 · 申请安装">申请安装</button></section>
+<section class="card" id="welderTools"><h2>作业服务</h2><div class="tools"><button class="action" data-note="离线开机">离线开机</button><button class="action" data-note="开机记录">开机记录</button><button class="action" data-note="申请安装">申请安装</button></div></section>
+<section class="card" id="installerTools" hidden>
+  <h2>安装与维修</h2>
+  <div class="tools">
+    <button class="action" data-note="批量安装">批量安装</button>
+    <button class="action" data-note="预约安装">预约安装</button>
+    <button class="action" data-note="安装记录">安装记录</button>
+    <button class="action" data-note="设备维修">设备维修</button>
+    <button class="action" data-note="维修记录">维修记录</button>
+  </div>
+</section>
+<section class="card" id="safetyTools" hidden>
+  <h2>单位安全管理</h2>
+  <div class="tools">
+    <button class="action" data-note="芯片安装">芯片安装</button>
+    <button class="action" data-note="预约记录">预约记录</button>
+    <button class="action" id="openWelderManagement">焊机管理</button>
+    <button class="action" data-note="人员管理">人员管理</button>
+    <button class="action" data-note="预警处置">预警处置</button>
+  </div>
+</section>
+<section class="card"><h2>学习帮助</h2><div class="tools"><button class="action" data-note="学习培训">学习培训</button><button class="action" data-note="操作指南">操作指南</button><button class="action" data-note="常见问题">常见问题</button></div></section>
+</section>
+<button class="robot-support" type="button" data-note="智能客服" aria-label="智能客服">
+  <svg viewBox="0 0 44 36" aria-hidden="true">
+    <path d="M5 13C1 13 1 26 5 26m34-13c4 0 4 13 0 13" fill="#408ce2"/>
+    <rect x="5" y="5" width="34" height="27" rx="10" fill="#2676cc" stroke="#68b5ff" stroke-width="2"/>
+    <rect x="9" y="9" width="26" height="19" rx="7" fill="#102852"/>
+    <g class="robot-eyes" fill="#65e4ff">
+      <rect x="14" y="13" width="4" height="10" rx="2"/>
+      <rect x="26" y="13" width="4" height="10" rx="2"/>
+    </g>
+  </svg>
+</button>
+<section id="profilePage" hidden>
+  <header><button class="action" id="profileBack" type="button">返回</button><h1 tabindex="-1" id="profileTitle">个人信息编辑</h1></header>
+  <p class="card notice">仅可修改手机号。其他信息如需更改，请联系客服 <a href="tel:4000119000">4000119000</a>。</p>
+  <form id="profileForm" class="card profile-form">
+    <label>姓名<input value="戴宁" readonly></label>
+    <label>身份证号<input value="342422********358X" readonly></label>
+    <label>手机号码<input id="profilePhone" type="tel" inputmode="numeric" autocomplete="off" maxlength="11" pattern="1[3-9][0-9]{9}" placeholder="180****3837" title="请输入有效的 11 位手机号码"></label>
+    <label>所属企业<input value="天泽智联科技股份公司" readonly></label>
+    <label>所属区域<textarea readonly rows="2">安徽省 / 合肥市 / 经开区 / 芙蓉社区管理委员会街道</textarea></label>
+    <p id="profileStatus" class="muted" role="status"></p>
+    <div class="profile-footer"><button class="action profile-save" type="submit">确定</button><button class="action profile-logout" id="profileLogout" type="button">退出登录</button></div>
+  </form>
+</section>
+<section id="signedOut" class="card" hidden><h1 tabindex="-1">已退出登录</h1><button class="action" id="demoLogin" type="button">重新进入演示</button></section>
+<section id="welderManagement" hidden>
+  <header class="welding-header">
+    <button type="button" class="action" id="weldingBack">返回</button>
+    <h1 id="weldingTitle" tabindex="-1">焊机管理</h1>
+    <button type="button" class="action welding-export" id="exportWelding">导出</button>
+  </header>
+  <div class="filters">
+    <input id="weldingSearch" type="search" aria-label="搜索设备编号或焊机编码" placeholder="请输入设备编号／焊机编码搜索">
+    <select id="weldingWork" aria-label="作业状态"><option value="">全部作业状态</option><option>作业中</option><option>停止作业</option></select>
+    <select id="weldingPower" aria-label="通电状态"><option value="">全部通电状态</option><option>已通电</option><option>已断电</option></select>
+  </div>
+  <p class="muted welding-count" id="weldingCount" role="status"></p>
+  <div id="weldingRows"></div>
+  <div class="welding-empty" id="weldingEmpty" hidden>暂无数据</div>
+</section>
+<section id="sites" hidden>
+<div class="map-stage" id="mapStage"><div class="filters"><select id="city" aria-label="市"></select><select id="district" aria-label="区县"></select><input id="search" type="search" aria-label="搜索站点" placeholder="搜索站点名称或地址"></div>
+<div class="map" id="map" aria-label="安装站点地图"><p class="map-fallback">地图加载中，站点列表可直接查看。</p></div>
+<p class="muted map-hint">行政区划底图 · 站点坐标待核实</p></div>
+<section class="sheet" aria-labelledby="stationHeading">
+
+<div class="station-sheet-head"><h2 id="stationHeading">安装站点</h2><button class="action" id="closeStation" type="button" hidden>返回站点列表</button></div>
+<p class="count muted" id="count" aria-live="polite"></p><div id="stations"></div>
+</section>
+</section>
+</main>
+<nav class="nav" aria-label="底部导航"><button data-page="work" aria-current="page">工作台</button><button class="scan" data-note="扫码作业"><svg class="scan-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m8 0h4v-4M4 12h16M9 8h6v8H9z"/></svg>扫码作业</button><button data-page="sites">站点</button></nav>
+<dialog id="notice"><h2 id="dialogTitle"></h2><p id="dialogText"></p><form method="dialog"><button class="action">关闭</button></form></dialog>
+<dialog id="versionDialog" aria-labelledby="versionTitle"><header><h2 id="versionTitle">V2.1.15 版本迭代需求</h2><form method="dialog"><button class="action" autofocus>关闭</button></form></header>
+<section><h3>1. 工作台布局优化</h3><p>保留橙色主题和头像，身份卡展示姓名、角色和所属单位。顶部以较小字号显示电焊作业、日期和星期。消息铃铛显示未读数字，安全提示并入按角色轮播的「最新公告」。</p><p>移除「当前作业」，应用入口使用彩色圆角图标与名称。政府补贴沿用绿色并提供申请安装。保留支持眨眼的蓝色机器人智能客服入口。</p></section>
+<section><h3>2. 角色切换与专属工作台</h3><p>角色选择弹框为四种角色配独立图标并标记当前角色，点击后进入对应工作台。</p><table class="version-role-table" aria-label="各角色工作台与底部菜单对照">
+  <thead><tr><th scope="col">角色</th><th scope="col">工作台入口</th><th scope="col">底部菜单</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">焊工</th><td>作业服务<br>离线开机、开机记录、申请安装</td><td>工作台、扫码作业、站点</td></tr>
+    <tr><th scope="row">安装工</th><td>安装与维修<br>批量安装、预约安装、安装记录、设备维修、维修记录</td><td>工作台、站点</td></tr>
+    <tr><th scope="row">项目负责人</th><td>单位安全管理<br>芯片安装、预约记录、焊机管理、人员管理、预警处置、政府补贴</td><td>工作台、站点</td></tr><tr><th scope="row">企业安全负责人</th><td>单位安全管理<br>芯片安装、预约记录、焊机管理、人员管理、预警处置、政府补贴</td><td>工作台、站点</td></tr>
+  </tbody>
+</table>
+<p>焊工底栏的「扫码作业」使用橙色按钮并配扫码图标，识别设备后按状态提供开机或关机操作。</p><p>焊工未认证时显示「待认证」和「去认证」，通过后显示「已认证」和「查看认证」，可查看认证姓名、脱敏证件信息和有效期（如有）。三个角色均保留学习培训、操作指南和常见问题。</p></section>
+<section><h3>3. 站点地图与列表</h3><p>从底栏进入站点，支持按市、区县和关键词筛选。蓝灰地图与列表同步更新，左上角显示「安装站点（N个）」。点击橙色点位后，下方只显示该站点，点击「返回站点列表」恢复原筛选结果。</p><p>站点采用等高的左图右文布局，展示名称、所属区域、详细地址、站点状态、负责人和联系方式。</p></section>
+<section><h3>4. 个人信息与退出登录</h3><p>点击头像进入个人信息编辑，保留原有功能，仅手机号可编辑。原工作台的「退出」移至个人信息页底部，改为「退出登录」。确认后进入退出状态，取消则留在当前页。</p></section>
+<section><h3>5. 原型演示说明</h3><p>站点坐标待核实，部分照片为示意图，负责人、联系方式与未读数为演示数据。认证、扫码、安装维修、安全管理、智能客服和登录的正式流程需接入对应业务服务。</p></section></dialog>
+<dialog id="roleDialog" aria-labelledby="roleTitle"><form method="dialog">
+  <div class="role-head"><h2 id="roleTitle">请选择你的角色</h2><button class="role-close" value="cancel" aria-label="取消切换">×</button></div>
+  <div class="role-options">
+    <button class="role-option" value="焊工"><span class="role-symbol" style="--role-color:#168779"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M6 12V9a6 6 0 0 1 12 0v3M12 3v6M7 14a5 5 0 0 0 10 0M4 21c2-4 14-4 16 0"/></svg></span><span>我是焊工</span><span class="role-state">›</span></button>
+    <button class="role-option" value="安装工"><span class="role-symbol" style="--role-color:#bb4c10"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5a5 5 0 0 0-6 6l-5 5a3 3 0 0 0 4 4l5-5a5 5 0 0 0 6-6l-3 3-3-3z"/></svg></span><span>我是安装工</span><span class="role-state">›</span></button>
+    <button class="role-option" value="企业安全负责人"><span class="role-symbol" style="--role-color:#3769aa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v5c0 4 3 8 8 10 5-2 8-6 8-10V6zM8 12l3 3 5-5"/></svg></span><span>我是企业安全负责人</span><span class="role-state">›</span></button>
+    <button class="role-option" value="项目负责人"><span class="role-symbol" style="--role-color:#7251a1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v5c0 4 3 8 8 10 5-2 8-6 8-10V6zM8 12l3 3 5-5"/></svg></span><span>我是项目负责人</span><span class="role-state">›</span></button>
+  </div>
+</form></dialog>
+<script>
+const data=[
+ ['黄山脉链五金机电','黄山市','屯溪区','新潭镇','梅林国际-北门',48,60,'周明（演示）','138****1201','../assets/station-chuanhai.png',true],
+ ['休宁野狼五金机电','黄山市','休宁县','海阳镇','齐云西大道49号',23,73,'许诚（演示）','138****1202','../assets/station-chuanhai.png',true],
+ ['歙县未来万家五金机电','黄山市','歙县','徽城镇','润峰水岸名城',70,69,'方敏（演示）','138****1203','../assets/station-chuanhai.png',true],
+ ['川海五金机电','合肥市','巢湖市','凤凰山街道','川海五金机电（新都人家店）',45,22,'陈宇（演示）','138****1204','../assets/station-chuanhai.png'],
+ ['锐锢商城','宣城市','宣州区','双桥街道','建材交易中心',78,32,'赵宁（演示）','138****1205','../assets/station-chuanhai.png',true]
+];
+const byId=id=>document.getElementById(id);
+const profilePage=byId('profilePage');
+const mainNav=document.querySelector('.nav');
+const robotSupport=document.querySelector('.robot-support');
+function showProfile(open){
+ profilePage.hidden=!open;
+ byId('work').hidden=open;
+ mainNav.hidden=open;
+ robotSupport.hidden=open;
+ window.scrollTo(0,0);
+ if(open)byId('profileTitle').focus();else byId('openProfile').focus();
+}
+byId('openProfile').onclick=()=>showProfile(true);
+byId('profileBack').onclick=()=>{
+ byId('profileForm').reset();
+ byId('profilePhone').value=savedPhone;
+ byId('profileStatus').textContent='';
+ showProfile(false);
+};
+let savedPhone='';
+byId('profileForm').onsubmit=event=>{
+ event.preventDefault();
+ savedPhone=byId('profilePhone').value;
+ byId('profileStatus').textContent=savedPhone?'手机号已保存到本次演示。':'请输入手机号。';
+};
+byId('profileLogout').onclick=()=>{
+ if(!window.confirm('确定退出登录？'))return;
+ savedPhone='';
+ byId('profileForm').reset();
+ byId('profileStatus').textContent='';
+ profilePage.hidden=true;
+ byId('signedOut').hidden=false;
+ byId('signedOut').querySelector('h1').focus();
+};
+byId('demoLogin').onclick=()=>{
+ byId('signedOut').hidden=true;
+ showProfile(false);
+};
+const weldingDevices=[
+ {id:'DEMO-001',code:'HJ-001',work:'作业中',power:'已通电',records:[['开机','2026-11-26 09:15:00']]},
+ {id:'DEMO-002',code:'HJ-002',work:'停止作业',power:'已断电',records:[['开机','2026-11-26 08:30:00'],['关机','2026-11-26 10:30:00']]}
+];
+const weldingPage=byId('welderManagement');
+function matchedWeldingDevices(){
+ const search=byId('weldingSearch').value.trim().toLowerCase();
+ const work=byId('weldingWork').value;
+ const power=byId('weldingPower').value;
+ return weldingDevices.filter(device=>
+  (!work||device.work===work)&&(!power||device.power===power)&&
+  [device.id,device.code].some(value=>value.toLowerCase().includes(search))
+ );
+}
+function renderWeldingDevices(){
+ const matched=matchedWeldingDevices();
+ const list=byId('weldingRows');
+ list.replaceChildren();
+ for(const device of matched){
+  const row=document.createElement('article');
+  row.className='card welding-device';
+  const name=document.createElement('strong');
+  name.textContent=device.id+' · '+device.code;
+  const status=document.createElement('p');
+  status.className='muted';
+  status.textContent=device.work+' · '+device.power;
+  row.append(name,status);
+  list.append(row);
+ }
+ byId('weldingCount').textContent='共 '+matched.length+' 台焊机';
+ byId('weldingEmpty').hidden=matched.length>0;
+ byId('exportWelding').disabled=!matched.some(device=>device.records.length);
+}
+function showWeldingManagement(open){
+ weldingPage.hidden=!open;
+ byId('work').hidden=open;
+ mainNav.hidden=open;
+ robotSupport.hidden=open;
+ window.scrollTo(0,0);
+ if(open){renderWeldingDevices();byId('weldingTitle').focus();}
+ else byId('openWelderManagement').focus();
+}
+byId('openWelderManagement').onclick=()=>showWeldingManagement(true);
+byId('weldingBack').onclick=()=>showWeldingManagement(false);
+byId('weldingSearch').addEventListener('input',renderWeldingDevices);
+for(const id of ['weldingWork','weldingPower'])byId(id).addEventListener('change',renderWeldingDevices);
+byId('exportWelding').onclick=()=>{
+ const records=matchedWeldingDevices().flatMap(device=>device.records.map(record=>[device.id,device.code,...record]));
+ if(!records.length)return;
+ const csv=[['设备编号','焊机编码','操作','操作时间'],...records].map(row=>
+  row.map(value=>'"'+value.replaceAll('"','""')+'"').join(',')
+ ).join('\r\n');
+ const url=URL.createObjectURL(new Blob(['\uFEFF',csv],{type:'text/csv;charset=utf-8'}));
+ const link=document.createElement('a');
+ link.href=url;
+ link.download='焊机开关机记录-演示.csv';
+ document.body.append(link);
+ link.click();
+ link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ byId('weldingCount').textContent='已导出 '+records.length+' 条开关机记录';
+};
+const roleDialog=byId('roleDialog');
+byId('switchRole').onclick=()=>{
+ roleDialog.returnValue='';
+ const current=byId('role').textContent.trim();
+ for(const button of roleDialog.querySelectorAll('.role-option')){
+  const selected=button.value===current;
+  if(selected)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');
+  button.querySelector('.role-state').textContent=selected?'当前':'›';
+ }
+ roleDialog.showModal();
+};
+roleDialog.addEventListener('close',()=>{
+ const selected=roleDialog.returnValue;
+ if(!['焊工','安装工','企业安全负责人','项目负责人'].includes(selected))return;
+ byId('role').textContent=selected;
+ const isWelder=selected==='焊工';
+ byId('certAction').hidden=!isWelder;
+ byId('certState').hidden=!isWelder;
+ const isInstaller=selected==='安装工';
+ byId('installerTools').hidden=!isInstaller;
+ const isSafetyLead=['企业安全负责人','项目负责人'].includes(selected);
+ byId('safetyTools').hidden=!isSafetyLead;
+ byId('welderTools').hidden=!isWelder;
+ byId('welderSubsidy').hidden=isInstaller;
+ document.querySelector('.nav .scan').hidden=!isWelder;
+ document.querySelector('.nav').classList.toggle('installer-nav',!isWelder);
+ const track=document.querySelector('.message-track');
+ const messages=isInstaller
+  ? ['批量安装 · 先校验设备开关机，再登记信息','预约安装 · 查看企业预约工单','设备维修 · 可查看维修记录']
+  : isSafetyLead
+   ? ['安全提醒 · 请关注本单位焊机状态','预警处理 · 请及时查看并处理预警','加芯赋码 · 可通过政府补贴入口申请安装']
+   : ['动焊先扫码，持证再作业。','学习培训 · 可查看操作指南','设备服务 · 可查询安装站点'];
+ [...track.children].forEach((line,index)=>{line.textContent=messages[index % messages.length];});
+});
+const icons=['M4 4h16v16H4z M8 12h8','M5 4h14v16H5z M8 8h8 M8 12h8 M8 16h5','M4 8h16v12H4z M9 8V4h6v4','M3 5h8v15H3z M13 5h8v15h-8z','M5 4h14v16H5z M8 8h8 M8 12h5','M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M9 9a3 3 0 1 1 4 3v2 M13 17h1'];
+const iconColors=[['#54aafa','#146ed4'],['#ffad37','#d15c05'],['#5acdc4','#118977'],['#b67aef','#7942cd'],['#ff8965','#ce4531'],['#5bcbae','#14866c']];
+const installerIcons=[
+ ['M4 7h16v13H4z M8 7V4h8v3 M8 13h8 M12 9v8','#5acdc4','#118977'],
+ ['M4 6h16v14H4z M8 3v6 M16 3v6 M4 11h16 M9 15l2 2 4-4','#b67aef','#7942cd'],
+ ['M5 4h14v16H5z M8 8h8 M8 12h8 M8 16h5','#54aafa','#146ed4'],
+ ['M14 5a4 4 0 0 0-5 5l-5 5a2 2 0 0 0 3 3l5-5a4 4 0 0 0 5-5l-3 2-2-2z','#5bcbae','#14866c'],
+ ['M6 4h12v16H6z M9 8h6 M9 12h6 M9 16h4','#48baa6','#187967']
+];
+document.querySelectorAll('#work .tools:not(#installerTools .tools):not(#safetyTools .tools) button').forEach((button,index)=>decorateTool(button,icons[index],...iconColors[index]));
+document.querySelectorAll('#installerTools button').forEach((button,index)=>decorateTool(button,...installerIcons[index]));
+const safetyIcons=[
+ [icons[2],'#54aafa','#146ed4'],
+ [installerIcons[1][0],'#b67aef','#7942cd'],
+ [icons[0],'#54aafa','#146ed4'],
+ ['M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M3 20v-2a6 6 0 0 1 12 0v2 M16 10h5 M18.5 7.5v5','#5bcbae','#14866c'],
+ ['M12 4 3 20h18z M12 10v4 M12 17h.01','#ff8965','#ce4531']
+];
+document.querySelectorAll('#safetyTools button').forEach((button,index)=>decorateTool(button,...safetyIcons[index]));
+function decorateTool(button,shape,light,dark){
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');
+ const path=document.createElementNS(svg.namespaceURI,'path');
+ path.setAttribute('d',shape);svg.append(path);
+ const icon=document.createElement('span');
+ icon.className='app-icon';
+ icon.style.setProperty('--icon-light',light);
+ icon.style.setProperty('--icon-dark',dark);
+ icon.append(svg);
+ button.prepend(icon);
+}
+const city=byId('city'),district=byId('district'),search=byId('search');
+let active=-1;
+const stationIcon='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 10l2-5h14l2 5M4 10h16v10H4zM9 20v-6h6v6M3 10h18"/></svg>';
+byId('closeStation').onclick=()=>{
+ active=-1;
+ render();
+ byId('stationHeading').focus();
+};
+let map, markerLayer;
+const positions=[[29.74,118.29],[29.79,118.19],[29.87,118.43],[31.61,117.87],[30.95,118.81]];
+function addStationBasemap(){
+ const boundaries=window.STATION_BOUNDARIES;
+ if(!boundaries)return;
+ map.attributionControl.addAttribution('行政区划 &copy; <a href="https://datav.aliyun.com/portal/school/atlas/area_selector">阿里云 DataV</a>');
+ const labelPane=map.createPane('boundaryLabels');
+ labelPane.style.zIndex=590;
+ labelPane.style.pointerEvents='none';
+ const createLayer=(features,style)=>{
+  const labels=L.layerGroup();
+  const areas=L.geoJSON(features,{interactive:false,style,onEachFeature(feature){
+   const {center,name}=feature.properties;
+   if(!center||!name)return;
+   const label=document.createElement('span');
+   label.textContent=name;
+   L.tooltip({permanent:true,direction:'center',className:'boundary-label',pane:'boundaryLabels'})
+    .setLatLng([center[1],center[0]]).setContent(label).addTo(labels);
+  }}).addTo(map);
+  return {areas,labels};
+ };
+ const cities=createLayer(boundaries.cities,{color:'#7793aa',weight:1.2,fillColor:'#eff4f8',fillOpacity:0.88});
+ const counties=createLayer(boundaries.counties,{color:'#a4b7c9',weight:0.8,fill:false});
+ const updateDetail=()=>{
+  const showCounties=map.getZoom()>=10;
+  if(showCounties){
+   map.removeLayer(cities.labels);
+   counties.areas.addTo(map);
+   counties.labels.addTo(map);
+  }else{
+   map.removeLayer(counties.areas);
+   map.removeLayer(counties.labels);
+   cities.labels.addTo(map);
+  }
+ };
+ map.on('zoomend',updateDetail);
+ updateDetail();
+}
+function initMap(){
+ if(map)return;
+ if(!window.L){
+  byId('map').textContent='地图组件未加载，仍可使用下方站点列表。';
+  return;
+ }
+ byId('map').replaceChildren();
+ map=L.map('map',{scrollWheelZoom:false,preferCanvas:true,minZoom:6,maxZoom:14}).setView([31.82,117.23],12);
+ addStationBasemap();
+ if(window.RISK_STREET_GEOJSON){
+  const streets=L.geoJSON(window.RISK_STREET_GEOJSON,{interactive:false,style:{color:'#6d8ba5',weight:1.2,fillColor:'#aec7dc',fillOpacity:0.08}});
+  const updateStreets=()=>{
+   if(map.getZoom()>=11)streets.addTo(map);
+   else map.removeLayer(streets);
+  };
+  map.on('zoomend',updateStreets);
+  updateStreets();
+ }
+ markerLayer=L.layerGroup().addTo(map);
+}
+function options(select,label,values){
+ select.replaceChildren(new Option(label,''));
+ for(const value of new Set(values)) select.add(new Option(value,value));
+}
+function districts(){
+ options(district,'全部区县',data.filter(row=>!city.value||city.value===row[1]).map(row=>row[2]));
+}
+function render(){
+ const list=byId('stations'),bounds=[];
+ list.replaceChildren();markerLayer?.clearLayers();
+ let count=0;
+ data.forEach(([name,c,d,t,address,x,y,contactName,contactPhone,photoUrl,isSamplePhoto],index)=>{
+  if((city.value&&city.value!==c)||(district.value&&district.value!==d)||!(name+c+d+t+address).includes(search.value.trim()))return;
+  count++;
+  if(markerLayer){
+   const position=positions[index];
+   bounds.push(position);
+   const icon=L.divIcon({className:'station-marker'+(active===index?' selected':''),html:stationIcon,iconSize:[34,34],iconAnchor:[17,17]});
+   const marker=L.marker(position,{icon,title:name+'（示意点位）',alt:name}).addTo(markerLayer);
+   marker.getElement()?.setAttribute('aria-label',name);
+   const label=document.createElement('span');
+   label.textContent=name+'（示意）';
+   marker.bindPopup(label);
+   marker.on('click',()=>{
+    active=index;
+    render();
+    byId('stationHeading').scrollIntoView({block:'nearest'});
+   });
+   if(active===index)marker.openPopup();
+  }
+  if(active>=0&&active!==index)return;
+  const card=document.createElement(active===index?'article':'button');
+  card.id='station-'+index;card.className='card station'+(active===index?' active':'');
+  const media=document.createElement('span');media.className='station-media';card.append(media);
+  const placeholder=document.createElement('span');
+  placeholder.className='station-photo station-placeholder';
+  placeholder.innerHTML=stationIcon+'<span>暂无站点照片</span>';
+  if(photoUrl){
+   const photo=document.createElement('img');
+   photo.className='station-photo';photo.alt=isSamplePhoto?'站点示意照片':name+'站点照片';photo.src=photoUrl;
+   photo.onerror=()=>photo.replaceWith(placeholder);
+   media.append(photo);
+   if(isSamplePhoto){const tag=document.createElement('span');tag.className='station-photo-label';tag.textContent='示意照片';media.append(tag);}
+  }else media.append(placeholder);
+  const copy=document.createElement('div');
+  copy.className='station-copy';card.append(copy);
+  for(const [tag,value,cls] of [['span','已启用','status'],['strong',name,''],['p',c+' · '+d+' · '+t,'muted'],['p',address,''],['p','站点负责人：'+(contactName||'未登记'),'muted'],['p','联系方式：'+(contactPhone||'未登记'),'muted']]){
+   const node=document.createElement(tag);node.textContent=value;node.className=cls;copy.append(node);
+  }
+  if(active!==index)card.onclick=()=>{active=index;render();byId('stationHeading').scrollIntoView({block:'nearest'});};
+  list.append(card);
+ });
+ byId('count').textContent='没有匹配站点，请调整筛选条件';
+ byId('count').hidden=active>=0||count>0;
+ byId('closeStation').hidden=active<0;
+ byId('stationHeading').textContent=active>=0?'站点详情':'安装站点（'+count+'个）';
+ byId('stationHeading').tabIndex=-1;
+ if(map&&active<0&&bounds.length)map.fitBounds(bounds,{padding:[22,22],maxZoom:12});
+}
+options(city,'全部市',data.map(row=>row[1]));districts();render();
+city.onchange=()=>{districts();active=-1;render();};
+district.onchange=search.oninput=()=>{active=-1;render();};
+document.addEventListener('click',event=>{
+ const target=event.target.closest('button');
+ if(!target)return;
+ if(target.dataset.page){
+  const page=target.dataset.page;
+  byId('work').hidden=page!=='work';byId('sites').hidden=page!=='sites';
+  if(page==='sites'){initMap();map?.invalidateSize();render();}
+  document.querySelector('.robot-support').style.display=page==='work'?'':'none';
+  document.querySelectorAll('.nav [data-page]').forEach(button=>{
+   if(button.dataset.page===page)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+  });
+  window.scrollTo(0,0);
+ }
+ if(target.dataset.note){
+  const title=target.dataset.note;
+  byId('dialogTitle').textContent=title;
+  byId('dialogText').textContent=title==='扫码作业'?'正式版扫码识别设备后，根据该设备状态提供开机或关机操作。原型仅展示入口。':'此入口用于原型演示，正式业务待接入。';
+  byId('notice').showModal();
+ }
+});
+</script>
+</html>

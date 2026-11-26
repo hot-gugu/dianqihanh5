@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>单位管理列表 - 合肥市电气焊安全监管服务平台</title>
+<style>
+  *{box-sizing:border-box}body{margin:0;background:#f0f6fd;color:#263343;font:14px "Microsoft YaHei",sans-serif}a{color:inherit;text-decoration:none}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;min-height:66px;background:linear-gradient(110deg,#597ee4,#355eda);color:white}header strong{font-size:18px}header nav{display:flex;gap:24px;align-items:center}
+  .layout{display:grid;grid-template-columns:215px minmax(0,1fr);min-height:calc(100vh - 66px)}aside{background:white;padding:14px 0}aside a,aside span{display:block;padding:15px 22px}aside .group{color:#235dbb;font-weight:bold}.sub{background:#f1f4f8}.sub span{padding-left:42px}.sub .current{color:white;background:#1679dc}
+  main{padding:16px 20px;min-width:0}.crumb{margin:0 0 16px;color:#576779}.panel{background:white;padding:18px;margin-bottom:16px}.filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.field{display:grid;gap:6px}input,select,button{font:inherit;border-radius:5px}input,select{width:100%;height:36px;border:1px solid #d8e2ee;padding:0 10px;background:white;color:inherit}.actions{display:flex;gap:8px;align-items:end;justify-content:flex-end;flex-wrap:wrap}button{cursor:pointer;border:1px solid #226fcb;padding:8px 12px;background:#226fcb;color:white}button:disabled{opacity:.65;cursor:default}
+  .table-scroll{overflow:auto}table{width:100%;min-width:1040px;border-collapse:collapse;text-align:left}th,td{padding:15px 12px;border-bottom:1px solid #e6ebf2}th{background:#f4f7fb;white-space:nowrap}td:last-child{white-space:nowrap}.row-actions{color:#246ab2}.row-actions span:last-child{color:#ad3a46}.total{text-align:right;margin:16px 0 0;color:#576779}
+  header strong{font-style:italic;font-weight:800}
+  .crumb span{color:#687b8c;margin-left:5px}
+  .filters{padding:20px 26px;row-gap:16px}
+  .filters .actions{grid-column:3 / -1}.credit-search{grid-column:1 / 3;display:flex;align-items:end;gap:8px}.credit-search label{flex:1}.credit-search button{min-height:36px;white-space:nowrap}@media(max-width:1100px){.credit-search,.filters .actions{grid-column:1 / -1}}
+  .page-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+  .page-heading .crumb{margin:0}
+  .iteration-trigger{background:#b84a08;border-color:#b84a08;font-weight:700;padding:9px 16px}
+  .iteration-trigger:hover{background:#963a05;border-color:#963a05}
+  .iteration-dialog{width:min(560px,calc(100% - 32px));padding:24px;border:1px solid #d8e2ee;border-radius:12px;color:inherit}
+  .iteration-dialog::backdrop{background:#14283d80}
+  .iteration-dialog h2{margin:0 0 16px;font-size:19px;color:#9a400b}
+  .iteration-dialog ol{padding-left:22px;line-height:1.8;color:#344e69}
+  .iteration-dialog form{text-align:right;margin-top:18px}
+  .field{display:flex;align-items:center;gap:10px;white-space:nowrap;min-width:0}
+  .field input,.field select{flex:1;min-width:0}
+  th:nth-child(4),th:nth-child(5){width:15%}
+  tbody tr:hover{background:#f4f8fe}
+  @media(max-width:1450px){.field{display:grid;gap:6px}}
+  @media(max-width:1100px){.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.layout{grid-template-columns:1fr}aside{display:none}header{padding:12px}header nav{gap:10px}main{padding:12px}.panel{padding:12px}.filters{grid-template-columns:1fr}}
+body > header{position:sticky;top:0;z-index:25}.mini-entry{display:inline-flex!important;align-items:center;white-space:nowrap;border:1px solid #ffffff80;border-radius:6px;padding:5px 10px;color:white;text-decoration:none;font-weight:700}
+.warning-nav summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;list-style:none;padding-inline:22px;min-height:48px}.warning-nav summary::-webkit-details-marker{display:none}.warning-nav summary::after{content:"⌄"}.warning-nav[open]>summary::after{transform:rotate(180deg)}.warning-nav>a{display:block;padding-left:42px}
+</style>
+</head>
+<body>
+<header><strong>合肥市电气焊安全监管服务平台</strong><nav aria-label="平台导航"><button class="scope-trigger" type="button" aria-haspopup="dialog">版本需求范围</button><a class="mini-entry" href="mini-workbench.html">小程序入口</a><a href="analytics.html">总览</a><a href="index.html">监管大屏</a><span>电气焊</span></nav></header>
+<div class="layout">
+  <aside aria-label="管理导航">
+    <span class="group">单位管理</span>
+    <div class="sub"><span class="current" aria-current="page">单位管理列表</span><span>重点场所管理</span><span>重点场所扫码记录</span><span>单位安全负责人审核</span><span>重点场所管理员审核</span><span>施工项目管理</span></div>
+    <span>焊工管理</span><span>安装管理</span><a href="../device-management.html">设备管理</a><span>系统设置</span><span>运营管理</span><details class="warning-nav"><summary class="">预警统计</summary><a class="" href="analytics.html">统计分析</a><a class="" href="ledger.html">预警台账</a></details><span>学习培训</span>
+  </aside>
+  <main>
+    <div class="page-heading">
+      <p class="crumb">单位管理 <span>/ 单位管理列表</span></p>
+      <button class="iteration-trigger" type="button" id="iterationTrigger" aria-haspopup="dialog">迭代需求说明</button>
+    </div>
+    <section class="panel filters" aria-label="单位筛选">
+      <label class="field">单位名称<input data-key="name" placeholder="请选择所属单位"></label>
+      <label class="field">所属区域<select data-key="area"><option value="">请选择所属区域</option></select></label>
+      <label class="field">所属领域<select data-key="industry"><option value="">请选择所属领域</option></select></label>
+      <label class="field">生产状态<select data-key="status"><option value="">请选择生产状态</option></select></label>
+      <label class="field">是否焊接单位<select data-key="welding"><option value="">请选择是否焊接单位</option><option>是</option><option>否</option></select></label>
+      <label class="field">安全负责人姓名<input data-key="lead" placeholder="请输入安全负责人姓名"></label>
+      <label class="field">安全负责人联系方式<input data-key="phone" placeholder="请输入联系方式"></label>
+      <label class="field">单位类型<select data-key="type"><option value="">请选择单位类型</option><option>个人</option><option>项目</option><option>企业</option></select></label>
+      <form id="creditSearch" class="credit-search" role="search" aria-label="按统一社会信用代码搜索">
+  <label class="field">统一社会信用代码<input id="creditCode" type="search" placeholder="请输入统一社会信用代码"></label>
+  <button type="submit">搜索</button>
+</form>
+      <div class="actions"><button disabled>批量导入</button><button id="export">表格导出</button><button disabled>新建</button></div>
+    </section>
+    <section class="panel" aria-label="单位列表">
+      <div class="table-scroll"><table>
+        <thead><tr><th>单位类型</th><th>单位名称</th><th>统一社会信用代码</th><th>所属区域</th><th>单位地址</th><th>是否焊接单位</th><th>是否流动作业</th><th>安全负责人姓名</th><th>安全负责人联系方式</th><th>是否已安装设备</th><th>安装数量</th><th>操作</th></tr></thead>
+        <tbody id="companies"></tbody>
+      </table></div>
+      <p class="total" id="total" aria-live="polite"></p>
+    </section>
+  </main>
+</div>
+<dialog class="iteration-dialog" id="iterationDialog" aria-labelledby="iterationTitle">
+  <h2 id="iterationTitle">迭代需求说明</h2>
+  <ol>
+    <li>左侧导航“企业管理”改为“单位管理”，页面中原有的“企业”相关名称统一改为“单位”。</li>
+    <li>单位管理列表新增“单位类型”“是否已安装设备”“安装数量”三个字段，CSV 导出包含新增字段。</li>
+    <li>筛选区新增“单位类型”筛选项。</li>
+  </ol>
+  <form method="dialog"><button autofocus>关闭</button></form>
+</dialog>
+<script>
+  const iterationDialog=document.querySelector('#iterationDialog');
+  document.querySelector('#iterationTrigger').addEventListener('click',()=>iterationDialog.showModal());
+  const columns=['type','name','code','area','address','welding','mobile','lead','phone','installed','quantity'];
+  const areas=['庐阳区三孝口街道','包河区常青街道','肥东县肥东经济开发区','肥西县上派镇','长丰县双墩镇','肥西县桃花镇'];
+  const companies=Array.from({length:10},(_,index)=>{
+    const n=String(index+1).padStart(2,'0');
+    const quantity=index%4===0?0:index+1;
+    return {name:'示例单位 '+n,code:'DEMO-'+n,area:'安徽省合肥市'+areas[index%areas.length],
+      address:'—',welding:index===9?'否':'是',mobile:index===8?'是':'否',lead:'示例负责人 '+n,
+      phone:'未登记',industry:index%2?'建筑领域':'工矿领域',status:index===9?'停产':'生产中',
+      type:['个人','项目','企业'][index%3],installed:quantity>0?'是':'否',quantity};
+  });
+  const controls=[...document.querySelectorAll('[data-key]')];
+  for(const select of document.querySelectorAll('select[data-key]')){
+    if(select.options.length>1) continue;
+    for(const value of new Set(companies.map(company=>company[select.dataset.key]))){
+      select.add(new Option(value,value));
+    }
+  }
+  const rows=document.querySelector('#companies');
+  let creditQuery="";
+  function filtered(){
+    return companies.filter(company=>company.code.toUpperCase().includes(creditQuery)&&controls.every(control=>{
+      const value=control.value.trim();
+      const field=company[control.dataset.key];
+      return !value||(control.tagName==='SELECT'?field===value:field.includes(value));
+    }));
+  }
+  function render(){
+    const result=filtered();
+    rows.replaceChildren();
+    for(const company of result){
+      const row=rows.insertRow();
+      for(const key of columns) row.insertCell().textContent=company[key];
+      const actions=row.insertCell();
+      actions.className='row-actions';
+      actions.innerHTML='<span>人员管理</span>　<span>编辑</span>　<span>删除</span>';
+    }
+    if(!result.length){
+      const cell=rows.insertRow().insertCell();
+      cell.colSpan=columns.length+1;
+      cell.textContent='没有符合筛选条件的单位';
+    }
+    document.querySelector('#total').textContent='共 '+result.length+' 条演示记录';
+  }
+  controls.forEach(control=>control.addEventListener('input',render));
+  document.querySelector('#export').addEventListener('click',()=>{
+    const headings=[...document.querySelectorAll('th')].slice(0,-1).map(th=>th.textContent);
+    const csv=[headings,...filtered().map(company=>columns.map(key=>company[key]))].map(row=>row.join(',')).join('\r\n');
+    const url=URL.createObjectURL(new Blob(['\uFEFF',csv],{type:'text/csv;charset=utf-8'}));
+    const link=document.createElement('a');
+    link.href=url;
+    link.download='单位管理列表.csv';
+    link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  });
+  document.querySelector('#creditSearch').addEventListener('submit',event=>{
+    event.preventDefault();
+    creditQuery=document.querySelector('#creditCode').value.trim().toUpperCase();
+    render();
+  });
+  render();
+</script>
+<link rel="stylesheet" href="../assets/version-scope.css"><script src="../assets/version-scope.js"></script></body>
+</html>
